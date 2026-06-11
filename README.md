@@ -141,3 +141,4 @@ Developed as a React-based shopping website project to demonstrate modern fronte
 ```
 ```
 ![first screenshot](https://github.com/627sahilkhan-ui/assignment2/blob/66dd34019bf742664b4a4812576a158b90466238/Screenshot%202026-06-11%20174011.png)
+![second screenshot](https://github.com/627sahilkhan-ui/assignment2/blob/deec4174b67f3ca4a84853ef29e51ecd43c89832/Screenshot%202026-06-11%20174030.png)
