@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
 import Home from "./pages/home";
@@ -6,73 +6,95 @@ import About from "./pages/about";
 import Contact from "./pages/contact";
 import Cart from "./pages/cart";
 import Orders from "./pages/order";
+import Login from "./pages/login";
+import Signup from "./pages/signup";
+import Dashboard from "./pages/dashboard";
 
+import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
-
 
 function App() {
 
   const [cartItems, setCartItems] = useState([]);
 
-
-  // Add product to cart
+  // Add product to cart (safe state update)
   const addToCart = (product) => {
-    setCartItems([...cartItems, product]);
+    setCartItems((prev) => [...prev, product]);
   };
 
-
   return (
-
     <BrowserRouter>
-
       <Routes>
 
+        {/* 🚨 FORCE FIRST PAGE = SIGNUP */}
+        <Route path="/" element={<Navigate to="/signup" />} />
 
-        <Route 
-          path="/" 
+        {/* 🔓 PUBLIC AUTH ROUTES */}
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+
+        {/* 🔐 PROTECTED DASHBOARD */}
+        <Route
+          path="/dashboard"
           element={
-            <Home 
-              addToCart={addToCart}
-              cartCount={cartItems.length}
-            />
-          } 
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
         />
 
-
-        <Route 
-          path="/about" 
-          element={<About />} 
-        />
-
-
-        <Route 
-          path="/contact" 
-          element={<Contact />} 
-        />
-
-
-        <Route 
-          path="/cart" 
+        {/* 🔐 PROTECTED APP ROUTES */}
+        <Route
+          path="/home"
           element={
-            <Cart 
-              cartItems={cartItems}
-            />
-          } 
+            <ProtectedRoute>
+              <Home
+                addToCart={addToCart}
+                cartCount={cartItems.length}
+              />
+            </ProtectedRoute>
+          }
         />
 
-
-        <Route 
-          path="/orders" 
-          element={<Orders />} 
+        <Route
+          path="/about"
+          element={
+            <ProtectedRoute>
+              <About />
+            </ProtectedRoute>
+          }
         />
 
+        <Route
+          path="/contact"
+          element={
+            <ProtectedRoute>
+              <Contact />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute>
+              <Cart cartItems={cartItems} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <Orders />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
-
     </BrowserRouter>
-
   );
 }
-
 
 export default App;
