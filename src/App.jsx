@@ -6,9 +6,9 @@ import About from "./pages/about";
 import Contact from "./pages/contact";
 import Cart from "./pages/cart";
 import Orders from "./pages/order";
-import Login from "./pages/login";
-import Signup from "./pages/signup";
-import Dashboard from "./pages/dashboard";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
