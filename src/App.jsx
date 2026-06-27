@@ -26,8 +26,8 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* 🚨 FORCE FIRST PAGE = SIGNUP */}
-        <Route path="/" element={<Navigate to="/signup" />} />
+        {/* 🚨 FORCE FIRST PAGE = LOGIN */}
+        <Route path="/" element={<Navigate to="/login" />} />
 
         {/* 🔓 PUBLIC AUTH ROUTES */}
         <Route path="/signup" element={<Signup />} />
