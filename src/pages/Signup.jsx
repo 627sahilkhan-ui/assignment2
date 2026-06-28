@@ -19,7 +19,8 @@ const Signup = () => {
     e.preventDefault();
 
 
-    const {error} = await supabase.auth.signUp({
+
+    const {data,error} = await supabase.auth.signUp({
 
       email,
       password
@@ -37,7 +38,14 @@ const Signup = () => {
     else{
 
       alert("Signup Successful 🎉");
-      navigate("/login");
+
+
+      /*
+        After account creation,
+        send user directly to shopping website
+      */
+
+      navigate("/home");
 
     }
 
@@ -103,6 +111,23 @@ const Signup = () => {
 
 
       </form>
+
+
+      {/* Existing user button */}
+
+      <button
+
+        type="button"
+
+        className="order-btn"
+
+        onClick={()=>navigate("/login")}
+
+      >
+
+        Already have an account? Login
+
+      </button>
 
 
     </div>
