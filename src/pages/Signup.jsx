@@ -37,6 +37,7 @@ const Signup = () => {
 
     else{
 
+      localStorage.setItem("isAuthenticated", "true");
       alert("Signup Successful 🎉");
 
 

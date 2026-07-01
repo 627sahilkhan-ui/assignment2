@@ -44,7 +44,7 @@ function App() {
         <Route
           path="/"
           element={
-            <Navigate to="/login" />
+            <Navigate to="/login" replace />
           }
         />
 
@@ -155,6 +155,10 @@ function App() {
 
         />
 
+        <Route
+          path="*"
+          element={<Navigate to="/login" replace />}
+        />
 
       </Routes>
 

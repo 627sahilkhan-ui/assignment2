@@ -36,6 +36,7 @@ alert(error.message);
 
 else{
 
+localStorage.setItem("isAuthenticated", "true");
 alert("Login Successful ✅");
 
 // Redirect user to shopping website

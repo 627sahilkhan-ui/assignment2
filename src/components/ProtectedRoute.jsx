@@ -1,55 +1,72 @@
-import React,{useEffect,useState} from "react";
-import {Navigate} from "react-router-dom";
-import {supabase} from "../supabase";
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { supabase } from "../supabase";
 
+const ProtectedRoute = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-const ProtectedRoute = ({children})=>{
+  useEffect(() => {
+    let isMounted = true;
 
+    const syncAuth = async () => {
+      const storedAuth = localStorage.getItem("isAuthenticated") === "true";
 
-const [user,setUser]=useState(null);
+      if (storedAuth) {
+        if (isMounted) {
+          setIsAuthenticated(true);
+          setLoading(false);
+        }
+        return;
+      }
 
-const [loading,setLoading]=useState(true);
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const hasSession = Boolean(session?.user);
 
+      if (hasSession) {
+        localStorage.setItem("isAuthenticated", "true");
+      } else {
+        localStorage.removeItem("isAuthenticated");
+      }
 
+      if (isMounted) {
+        setIsAuthenticated(hasSession);
+        setLoading(false);
+      }
+    };
 
-useEffect(()=>{
+    syncAuth();
 
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      const hasSession = Boolean(session?.user);
 
-const checkUser=async()=>{
+      if (hasSession) {
+        localStorage.setItem("isAuthenticated", "true");
+      } else {
+        localStorage.removeItem("isAuthenticated");
+      }
 
+      if (isMounted) {
+        setIsAuthenticated(hasSession);
+        setLoading(false);
+      }
+    });
 
-const {data}=await supabase.auth.getUser();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
 
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
 
-setUser(data.user);
-
-setLoading(false);
-
-
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
-
-
-checkUser();
-
-
-
-},[]);
-
-
-
-if(loading){
-
-return <h2>Loading...</h2>;
-
-}
-
-
-
-return user ? children : <Navigate to="/login"/>;
-
-
-};
-
-
 
 export default ProtectedRoute;
